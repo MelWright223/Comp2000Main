@@ -5,8 +5,12 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class StockAdmin extends AdminLogon {
     private JPanel StockPanel;
@@ -23,20 +27,26 @@ public class StockAdmin extends AdminLogon {
     private JLabel StockPriceLbl;
     private JList StockList;
 
-    public StockAdmin(String title) {
+    public StockAdmin(String title) throws FileNotFoundException {
         super(title);
         setContentPane(StockPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setPreferredSize(new Dimension(500, 500));
         this.setVisible(true);
         pack();
-
+        loadData();
         AddStockBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
-
+                try {
+                    loadData();
+                } catch (FileNotFoundException fileNotFoundException) {
+                    fileNotFoundException.printStackTrace();
+                }
             }
+
+
+
 
         });
     }
@@ -45,40 +55,70 @@ public class StockAdmin extends AdminLogon {
         File fileIn = new File("Resources\\FileStock");
         Scanner fileRead = new Scanner(fileIn);
 
-        ArrayList<Stock> stockData = new ArrayList<>();
+        ArrayList<Stock> stockData = new ArrayList<Stock>();
+
+        String[] values = new String[0];
+        int i = 0;
+        DefaultListModel<String> model = new DefaultListModel();
 
 
         while (fileRead.hasNext()) {
+
             String line = fileRead.nextLine();
-            String[] values = line.split(",");
+            values = line.split(",");
             Stock item = new Stock();
+
 
             int itemCode = Integer.parseInt(values[0]);
             item.setStockCode(itemCode);
 
-            item.setStockName(values[1]);
+            String itemName = String.valueOf(values[1]);
+            item.setStockName(itemName);
 
             int itemQuant = Integer.parseInt(values[2]);
             item.setStockQuantity(itemQuant);
 
             double itemPrice = Double.parseDouble(values[3]);
             item.setStockPrice(itemPrice);
+            for (int s = 0; s<stockData.size(); s++){
+                Stock tempItem = new Stock(itemCode, itemName, itemQuant, itemPrice);
 
-            stockData.add(item);
+
+                stockData.add(tempItem);
+
+            }
+            model.addElement(values[1]);
+            StockList.setModel(model);
+
+
+
+
+
+
+
 
         }
-
-        for(int i =0; i<stockData.size(); i++){
-            DefaultListModel model = new DefaultListModel();
-            StockList = new JList(model);
-            model.add(i, stockData.get(1));
+        fileRead.close();
+            //for (Stock items : stockData) {
 
 
 
 
+
+
+            //}
+            //i++;
         }
 
-    }
+        //for(int i =0; i<stockData.size(); i++) {
+
+            //}
+
+
+
+
+
+
 
 
 

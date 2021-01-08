@@ -3,20 +3,28 @@ package com.Model;
 public class Stock {
 
     public int stockCode;
-
-
     public String stockName;
-
     public int stockQuantity;
     public double stockPrice;
 
+    public Stock(int itemCode, String itemName, int itemQuant, double itemPrice) {
+        stockCode = itemCode;
+        stockName = itemName;
+        stockQuantity = itemQuant;
+        stockPrice = itemPrice;
+
+    }
+
+    public Stock() {
+
+    }
 
 
     public int getStockCode(){
         return stockCode;
     }
 
-    public String GetStockName(){
+    public String getStockName(){
         return stockName;
 
     }
