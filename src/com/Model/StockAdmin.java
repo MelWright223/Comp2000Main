@@ -1,11 +1,14 @@
 package com.Model;
 
+import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
 import java.lang.reflect.Array;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,8 +29,15 @@ public class StockAdmin extends AdminLogon {
     private JLabel StockQuantLbl;
     private JLabel StockPriceLbl;
     private JList StockList;
+    private JButton ClearStock;
 
-    public StockAdmin(String title) throws FileNotFoundException {
+    private String[] values = new String[0];
+    private ArrayList<Stock> stockData = new ArrayList<Stock>();
+    private List<Stock> det;
+
+   private   File fileIn = new File("Resources\\Stock");
+
+    public StockAdmin(String title) throws IOException {
         super(title);
         setContentPane(StockPanel);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,12 +45,16 @@ public class StockAdmin extends AdminLogon {
         this.setVisible(true);
         pack();
         loadData();
+
+
         AddStockBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    loadData();
-                } catch (FileNotFoundException fileNotFoundException) {
+                    addStock();
+                    StockAdmin.this.dispose();
+                    StockAdmin stockAdmin = new StockAdmin("Stock");
+                } catch (IOException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
                 }
             }
@@ -49,92 +63,130 @@ public class StockAdmin extends AdminLogon {
 
 
         });
+
+        ClearStock.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                    clearItems();
+                    StockAdmin.this.dispose();
+                try {
+                    StockAdmin stockAdmin = new StockAdmin("Stock");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+            }
+        });
     }
 
-    public void loadData() throws FileNotFoundException {
-        File fileIn = new File("Resources\\FileStock");
-        Scanner fileRead = new Scanner(fileIn);
+    public void loadData() throws IOException {
 
-        ArrayList<Stock> stockData = new ArrayList<Stock>();
 
-        String[] values = new String[0];
-        int i = 0;
+        //Scanner fileRead = new Scanner(fileIn);
+        List<String> line = Files.readAllLines(Path.of(String.valueOf(fileIn)));
+        det = new ArrayList<>();
+
+
+        //int i = 0;
+
+        //String linesFile = line.toString();
         DefaultListModel<String> model = new DefaultListModel();
 
 
-        while (fileRead.hasNext()) {
+        for (String lines:line)
+        {
 
-            String line = fileRead.nextLine();
-            values = line.split(",");
-            Stock item = new Stock();
+            values = lines.split("\\|");
+            //Stock item = new Stock();
 
+            String itemName = values[0];
 
-            int itemCode = Integer.parseInt(values[0]);
-            item.setStockCode(itemCode);
+            int itemCode = Integer.parseInt(values[1]);
+            //item.setStockCode(itemCode);
 
-            String itemName = String.valueOf(values[1]);
-            item.setStockName(itemName);
+            //item.setStockName(itemName);
 
             int itemQuant = Integer.parseInt(values[2]);
-            item.setStockQuantity(itemQuant);
+            //item.setStockQuantity(itemQuant);
 
-            double itemPrice = Double.parseDouble(values[3]);
-            item.setStockPrice(itemPrice);
-            for (int s = 0; s<stockData.size(); s++){
-                Stock tempItem = new Stock(itemCode, itemName, itemQuant, itemPrice);
+            float itemPrice = Float.parseFloat(values[3]);
+           // item.setStockPrice(itemPrice);
 
-
-                stockData.add(tempItem);
-
-            }
-            model.addElement(values[1]);
+            det.add(new Stock(itemName, itemCode, itemQuant, itemPrice));
+            model.addElement(values[0]);
             StockList.setModel(model);
 
 
+            System.out.println(det);
+
+            StockList.addListSelectionListener(e -> {
+
+                String selected = (String.valueOf(StockList.getSelectedValue()));
+                StockNameTxt.setText(selected);
 
 
+                if (selected.equals(itemName)) {
 
+                    StockIdTxt.setText(String.valueOf(itemCode));
+                    StockPriceTxt.setText(String.valueOf(itemPrice));
+                    StockQuantTxt.setText(String.valueOf(itemQuant));
 
+                }
+
+            });
 
 
         }
-        fileRead.close();
-            //for (Stock items : stockData) {
 
 
 
 
 
+    }
 
-            //}
-            //i++;
-        }
-
-        //for(int i =0; i<stockData.size(); i++) {
-
-            //}
-
-
-
-
-
-
-
-
+    public void clearItems(){
+        StockIdTxt.setText("");
+        StockNameTxt.setText("");
+        StockQuantTxt.setText("");
+        StockPriceTxt.setText("");
+    }
 
 
     public void addStock()throws IOException {
-        FileWriter file = new FileWriter("Resources\\FileStock");
-        /*try {
-            BufferedWriter outputBuffer = new BufferedWriter(file);
-            outputBuffer.append("\n" + StockIdTxt.getText() + "," + StockNameTxt.getText() + "," + StockQuantTxt.getText() + "," + StockPriceTxt.getText());
 
 
-        } catch (
-                FileNotFoundException fe) {
-            fe.getMessage();
+        //  List<String> inputString = Files.readAllLines(Path.of(String.valueOf(fileIn)));
+
+        var sw = new BufferedWriter(new FileWriter(fileIn, true));
+        int i =0;
+        if (i < det.size()){
+            String data = "";
+            if (i > 0) {
+                data += "\n";
+
+            }
+            data += StockNameTxt.getText();
+            String itemCode = StockIdTxt.getText();
+            data += "|" + itemCode;
+            String itemQuant = StockQuantTxt.getText();
+            data += "|" + itemQuant;
+            String itemPrice = StockPriceTxt.getText();
+            data += "|" + itemPrice;
+            System.out.println(data);
+           // sw.append("\n");
+            sw.append(data);
+
+        }
+
+        sw.close();
+
+    }
+
+    public void deleteStock(){
 
 
-        }*/
+
+
     }
 }

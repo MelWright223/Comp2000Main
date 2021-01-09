@@ -5,9 +5,9 @@ public class Stock {
     public int stockCode;
     public String stockName;
     public int stockQuantity;
-    public double stockPrice;
+    public float stockPrice;
 
-    public Stock(int itemCode, String itemName, int itemQuant, double itemPrice) {
+    public Stock(String itemName, int itemCode, int itemQuant, float itemPrice) {
         stockCode = itemCode;
         stockName = itemName;
         stockQuantity = itemQuant;
@@ -32,7 +32,7 @@ public class Stock {
         return stockQuantity;
 
     }
-    public double getStockPrice(){
+    public float getStockPrice(){
         return stockPrice;
     }
 
@@ -49,7 +49,7 @@ public class Stock {
     }
 
 
-    public void setStockPrice(double stockPrice) {
+    public void setStockPrice(float stockPrice) {
         this.stockPrice = stockPrice;
     }
 }

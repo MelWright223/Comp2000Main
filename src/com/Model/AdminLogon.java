@@ -6,6 +6,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class AdminLogon extends Kiosk {
@@ -71,6 +72,8 @@ public class AdminLogon extends Kiosk {
             fe.getMessage();
 
             txtUser.setText("fuck");
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return isAuthenticated;
