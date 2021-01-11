@@ -16,7 +16,7 @@ public class AdminLogon extends Kiosk {
     private JTextField txtUser;
     private JTextField txtPass;
 
-    public AdminLogon(String title) {
+    public AdminLogon(String title) throws IOException {
         super(title);
         setContentPane(AdminMain);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -27,7 +27,11 @@ public class AdminLogon extends Kiosk {
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Kiosk kiosk = new Kiosk("Home");
+                try {
+                    Kiosk kiosk = new Kiosk("Home");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
                 AdminLogon.this.setVisible(false);
             }
         });

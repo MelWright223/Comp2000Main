@@ -1,25 +1,20 @@
 package com.Model;
 
-import javax.sound.midi.SysexMessage;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
-import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
-import java.util.Vector;
 
 public class StockAdmin extends AdminLogon {
     private JPanel StockPanel;
     private JButton AddStockBtn;
-    private JButton EditStockBtn;
     private JButton DeleteStockBtn;
+    private JButton EditStockBtn;
     private JTextField StockIdTxt;
     private JTextField StockNameTxt;
     private JTextField StockPriceTxt;
@@ -63,18 +58,40 @@ public class StockAdmin extends AdminLogon {
 
 
         });
+        DeleteStockBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteStock("Resources\\Stock", String.valueOf(StockList.getSelectedValue()), 1);
+                StockAdmin.this.dispose();
+                try {
+                    StockAdmin stockAdmin = new StockAdmin("Stock");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
+            }
+        });
+
+        EditStockBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                editStock("Resources\\Stock", String.valueOf(StockList.getSelectedValue()),1, String.valueOf(StockNameTxt.getText()),
+                        Integer.valueOf(StockIdTxt.getText()), Integer.valueOf(StockQuantTxt.getText()), Float.valueOf(StockPriceTxt.getText()));
+
+                StockAdmin.this.dispose();
+                try {
+                    StockAdmin stockAdmin = new StockAdmin("Stock");
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+            }
+        });
 
         ClearStock.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
                     clearItems();
-                    StockAdmin.this.dispose();
-                try {
-                    StockAdmin stockAdmin = new StockAdmin("Stock");
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
 
             }
         });
@@ -183,10 +200,87 @@ public class StockAdmin extends AdminLogon {
 
     }
 
-    public void deleteStock(){
+    public void deleteStock(String filePath, String removeItem, int positionOfItem){
+        int position = positionOfItem -1;
+        String tempFile = "Resources\\PLOP";
+        File oldFile = new File(filePath);
+        File newFile = new File(tempFile);
 
+        String currentLine;
 
+        try{
+            FileWriter fw = new FileWriter(tempFile, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+            FileReader fr = new FileReader(filePath);
+            BufferedReader br = new BufferedReader(fr);
+
+            while((currentLine = br.readLine())!=null){
+                String[] data = currentLine.split("\\|");
+                if (!(data[position].equalsIgnoreCase(removeItem))){
+                    pw.println(currentLine);
+                }
+            }
+            pw.flush();
+            pw.close();
+            fr.close();
+            br.close();
+            bw.close();
+            fw.close();
+            oldFile.delete();
+            File dump = new File(filePath);
+            newFile.renameTo(dump);
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
 
 
     }
+    public void editStock(String filePath, String editTerm, int positionOfTerm, String newName, int newCode, int newQuan, float newPrice) {
+        int position = positionOfTerm-1;
+        String tempFile = "Resources\\Dump";
+        File oldFile = new File(filePath);
+        File newFile = new File(tempFile);
+        String name = "";
+
+
+        String currentLine;
+
+        try{
+            FileWriter fw = new FileWriter(tempFile, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+            FileReader fr = new FileReader(filePath);
+            BufferedReader br = new BufferedReader(fr);
+
+
+            while((currentLine = br.readLine()) != null) {
+
+
+                String[] data = currentLine.split("\\|");
+
+                if(!(data[position].equals(editTerm))){
+                    pw.println(currentLine);
+                } else {
+                    pw.println(newName + "|" + newCode + "|" + newQuan + "|" + newPrice);
+                }
+            }
+
+            pw.flush();
+            pw.close();
+            fr.close();
+            br.close();
+            bw.close();
+            fw.close();
+            oldFile.delete();
+            File dump = new File(filePath);
+            newFile.renameTo(dump);
+
+        }
+        catch (Exception ignored){ }
+
+    }
+
 }

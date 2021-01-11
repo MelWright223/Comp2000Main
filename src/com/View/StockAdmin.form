@@ -8,7 +8,7 @@
     <properties/>
     <border type="none"/>
     <children>
-      <component id="5afcf" class="javax.swing.JButton" binding="EditStockBtn">
+      <component id="5afcf" class="javax.swing.JButton" binding="DeleteStockBtn">
         <constraints>
           <grid row="7" column="2" row-span="1" col-span="5" vsize-policy="0" hsize-policy="3" anchor="5" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="40" height="40"/>
@@ -18,7 +18,7 @@
           <text value="Delete"/>
         </properties>
       </component>
-      <component id="7de3" class="javax.swing.JButton" binding="DeleteStockBtn">
+      <component id="7de3" class="javax.swing.JButton" binding="EditStockBtn">
         <constraints>
           <grid row="4" column="6" row-span="3" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false">
             <preferred-size width="40" height="40"/>
