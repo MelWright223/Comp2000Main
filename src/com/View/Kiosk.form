@@ -11,7 +11,7 @@
     </properties>
     <border type="none"/>
     <children>
-      <component id="8d580" class="javax.swing.JList" binding="AddedStockLst">
+      <component id="8d580" class="javax.swing.JList" binding="addedStockLst">
         <constraints>
           <grid row="0" column="4" row-span="4" col-span="2" vsize-policy="4" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="100" height="50"/>
@@ -35,7 +35,7 @@
           <text value="ADMIN LOGIN"/>
         </properties>
       </component>
-      <component id="b4dc0" class="javax.swing.JList" binding="CurrentStockLst">
+      <component id="b4dc0" class="javax.swing.JList" binding="currentStockLst">
         <constraints>
           <grid row="0" column="0" row-span="3" col-span="3" vsize-policy="0" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="100" height="50"/>
@@ -43,7 +43,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="b2586" class="javax.swing.JButton" binding="ADDITEMButton" default-binding="true">
+      <component id="b2586" class="javax.swing.JButton" binding="addItemBtn">
         <constraints>
           <grid row="3" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -51,15 +51,17 @@
           <text value="ADD ITEM"/>
         </properties>
       </component>
-      <component id="c145c" class="javax.swing.JTextField" binding="textField1" default-binding="true">
+      <component id="c145c" class="javax.swing.JTextField" binding="totalTxt">
         <constraints>
           <grid row="4" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
             <preferred-size width="100" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <editable value="false"/>
+        </properties>
       </component>
-      <component id="f4a7e" class="javax.swing.JLabel" binding="TotalLbl">
+      <component id="f4a7e" class="javax.swing.JLabel" binding="totalLbl">
         <constraints>
           <grid row="4" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -67,7 +69,7 @@
           <text value="Total: "/>
         </properties>
       </component>
-      <component id="14514" class="javax.swing.JButton" binding="Cash">
+      <component id="14514" class="javax.swing.JButton" binding="cashBtn">
         <constraints>
           <grid row="3" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
@@ -83,7 +85,7 @@
         </constraints>
         <properties/>
       </component>
-      <component id="15a4c" class="javax.swing.JLabel">
+      <component id="15a4c" class="javax.swing.JLabel" binding="quantityLbl">
         <constraints>
           <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>

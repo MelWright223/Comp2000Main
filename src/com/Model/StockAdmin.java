@@ -28,7 +28,7 @@ public class StockAdmin extends AdminLogon {
 
     private String[] values = new String[0];
     private ArrayList<Stock> stockData = new ArrayList<Stock>();
-    private List<Stock> det;
+
 
    private   File fileIn = new File("Resources\\Stock");
 
@@ -102,7 +102,7 @@ public class StockAdmin extends AdminLogon {
 
         //Scanner fileRead = new Scanner(fileIn);
         List<String> line = Files.readAllLines(Path.of(String.valueOf(fileIn)));
-        det = new ArrayList<>();
+
 
 
         //int i = 0;
@@ -129,13 +129,12 @@ public class StockAdmin extends AdminLogon {
 
             float itemPrice = Float.parseFloat(values[3]);
            // item.setStockPrice(itemPrice);
+            stockData.add(new Stock(itemName, itemCode, itemQuant, itemPrice));
 
-            det.add(new Stock(itemName, itemCode, itemQuant, itemPrice));
             model.addElement(values[0]);
             StockList.setModel(model);
 
 
-            System.out.println(det);
 
             StockList.addListSelectionListener(e -> {
 
@@ -146,7 +145,7 @@ public class StockAdmin extends AdminLogon {
                 if (selected.equals(itemName)) {
 
                     StockIdTxt.setText(String.valueOf(itemCode));
-                    StockPriceTxt.setText(String.valueOf(itemPrice));
+                    StockPriceTxt.setText("£" +String.valueOf(itemPrice));
                     StockQuantTxt.setText(String.valueOf(itemQuant));
 
                 }
@@ -163,6 +162,7 @@ public class StockAdmin extends AdminLogon {
     }
 
     public void clearItems(){
+
         StockIdTxt.setText("");
         StockNameTxt.setText("");
         StockQuantTxt.setText("");
@@ -177,9 +177,9 @@ public class StockAdmin extends AdminLogon {
 
         var sw = new BufferedWriter(new FileWriter(fileIn, true));
         int i =0;
-        if (i < det.size()){
+        if (i < stockData.size()){
             String data = "";
-            if (i > 0) {
+            if (i < 0) {
                 data += "\n";
 
             }

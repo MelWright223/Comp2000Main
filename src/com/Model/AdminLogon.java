@@ -39,6 +39,7 @@ public class AdminLogon extends Kiosk {
         btnLogin.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
                 login();
             }
         });
@@ -75,7 +76,7 @@ public class AdminLogon extends Kiosk {
         } catch (FileNotFoundException fe){
             fe.getMessage();
 
-            txtUser.setText("fuck");
+            txtUser.setText("");
         } catch (IOException e) {
             e.printStackTrace();
         }
