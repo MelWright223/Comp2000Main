@@ -9,26 +9,23 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class AdminLogon extends Kiosk {
+public class AdminLogon extends AbstractView {
     private JPanel AdminMain;
     private JButton btnLogin;
     private JButton btnBack;
     private JTextField txtUser;
     private JTextField txtPass;
 
-    public AdminLogon(String title) throws IOException {
-        super(title);
+    public AdminLogon() throws IOException {
+
         setContentPane(AdminMain);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(500, 500));
-        this.setVisible(true);
-        pack();
+        displayJPanel();
 
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    Kiosk kiosk = new Kiosk("Home");
+                    Kiosk kiosk = new Kiosk();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -63,7 +60,7 @@ public class AdminLogon extends Kiosk {
 
                 if (values[0].equals(Username) && values[1].equals(Password)){
                         isAuthenticated = true;
-                        StockAdmin stock = new StockAdmin("Stock");
+                        StockAdmin stock = new StockAdmin();
                         AdminLogon.this.setVisible(false);
 
 

@@ -10,7 +10,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StockAdmin extends AdminLogon {
+public class StockAdmin extends AbstractView {
     private JPanel StockPanel;
     private JButton AddStockBtn;
     private JButton DeleteStockBtn;
@@ -32,13 +32,10 @@ public class StockAdmin extends AdminLogon {
 
    private   File fileIn = new File("Resources\\Stock");
 
-    public StockAdmin(String title) throws IOException {
-        super(title);
+    public StockAdmin() throws IOException {
+
         setContentPane(StockPanel);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(500, 500));
-        this.setVisible(true);
-        pack();
+        displayJPanel();
         loadData();
 
 
@@ -48,7 +45,7 @@ public class StockAdmin extends AdminLogon {
                 try {
                     addStock();
                     StockAdmin.this.dispose();
-                    StockAdmin stockAdmin = new StockAdmin("Stock");
+                    StockAdmin stockAdmin = new StockAdmin();
                 } catch (IOException fileNotFoundException) {
                     fileNotFoundException.printStackTrace();
                 }
@@ -64,7 +61,7 @@ public class StockAdmin extends AdminLogon {
                 deleteStock("Resources\\Stock", String.valueOf(StockList.getSelectedValue()), 1);
                 StockAdmin.this.dispose();
                 try {
-                    StockAdmin stockAdmin = new StockAdmin("Stock");
+                    StockAdmin stockAdmin = new StockAdmin();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -80,7 +77,7 @@ public class StockAdmin extends AdminLogon {
 
                 StockAdmin.this.dispose();
                 try {
-                    StockAdmin stockAdmin = new StockAdmin("Stock");
+                    StockAdmin stockAdmin = new StockAdmin();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }

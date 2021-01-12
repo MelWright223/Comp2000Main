@@ -2,10 +2,10 @@ package com.Model;
 
 public class Stock {
 
-    public int stockCode;
-    public String stockName;
-    public int stockQuantity;
-    public float stockPrice;
+    private int stockCode;
+    private String stockName;
+    private int stockQuantity;
+    private float stockPrice;
 
     public Stock(String itemName, int itemCode, int itemQuant, float itemPrice) {
         stockCode = itemCode;

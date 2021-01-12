@@ -1,16 +1,30 @@
 package com.Controller;
 
-import com.Model.Customer;
+import com.Model.AbstractView;
 
-public class CardPayment {
+
+import javax.swing.*;
+
+public class CardPayment extends AbstractView {
     public boolean bankApproved;
 
-    public Customer customer;
+    private JList stockedItemsLst;
+    private JButton returnBackBtn;
+    private JButton payCardBtn;
+    private JButton printRecieptBtn;
+    private JPanel cardPanel;
+    private JTextField textField1;
+    private JLabel basketLbl;
 
-    public void totalAmount(final float total) {
-    }
+  public CardPayment(){
+      setContentPane(cardPanel);
+      displayJPanel();
 
-    public void verificationScreen(final boolean bankApproved) {
-    }
+  }
+  public void loadBasket(){
+
+
+
+  }
 
 }

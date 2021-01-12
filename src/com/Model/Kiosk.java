@@ -1,6 +1,7 @@
 package com.Model;
 
-import com.sun.source.tree.WhileLoopTree;
+import com.Controller.CardPayment;
+import com.Controller.Cash;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,12 +13,15 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class Kiosk extends JFrame {
+public class Kiosk extends AbstractView {
     private JPanel KioskMain;
     private JButton btnLogin;
-    private JList currentStockLst;
-    private JList addedStockLst;
+    private JList<String> currentStockLst;
+    public JList<String> addedStockLst;
     private JTextField totalTxt;
     private JLabel totalLbl;
     private JButton cashBtn;
@@ -25,21 +29,23 @@ public class Kiosk extends JFrame {
     private JTextField quantityTxt;
     private JButton cardBtn;
     private JLabel quantityLbl;
+    private BlockingQueue<Kiosk> messages;
 
     private String[] values = new String[0];
     private ArrayList<Stock> stockData = new ArrayList<Stock>();
-    private DefaultListModel<String> model = new DefaultListModel();
+    private DefaultListModel<String> model = new DefaultListModel<>();
     DefaultListModel<String> addModel = new DefaultListModel<>();
     private File fileIn = new File("Resources\\Stock");
+    public static float total;
+    public ArrayList<String> things;
+   // private List<ArrayList> hope;
 
 
-    public Kiosk(String title) throws IOException {
-        super(title);
+    public Kiosk() throws IOException {
+
+        setTitle("Kiosk");
         setContentPane(KioskMain);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setPreferredSize(new Dimension(650, 500));
-        this.setVisible(true);
-        pack();
+        displayJPanel();
         loadAllStock();
 
 
@@ -48,7 +54,7 @@ public class Kiosk extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     Kiosk.this.dispose();
-                    AdminLogon adminLogon = new AdminLogon("test");
+                    AdminLogon adminLogon = new AdminLogon();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -60,15 +66,34 @@ public class Kiosk extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 int index = currentStockLst.getSelectedIndex();
-                String getItem = currentStockLst.getSelectedValue().toString();
+                //String getItem = currentStockLst.getSelectedValue().toString();
 
-                addModel.addElement(quantityTxt.getText() + " " + getItem);
+                //addModel.addElement(getItem);
 
                 if (index != -1) {
                     model.get(index);
                     addedStockLst.setModel(addModel);
                     addToBasket();
                 }
+            }
+        });
+        cashBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Kiosk.this.setVisible(false);
+                try {
+                    Cash cash = new Cash();
+                } catch (IOException | InterruptedException ioException) {
+                    ioException.printStackTrace();
+                }
+
+            }
+        });
+
+        cardBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                CardPayment card = new CardPayment();
             }
         });
     }
@@ -112,20 +137,21 @@ public class Kiosk extends JFrame {
     }
 
     public void addToBasket() {
-        String getItem = currentStockLst.getSelectedValue().toString();
+        things = new ArrayList<String>(addedStockLst.getModel().getSize());
+
+        String getItem = currentStockLst.getSelectedValue();
 
         Stock item = new Stock();
         Iterator<Stock> iterator = stockData.iterator();
         float itemPrice;
-        float total;
+
         int quant;
-        float price;
 
 
-        for (model.elements().asIterator(); iterator.hasNext(); ) { //model is my other listbox
+        for (model.elements().asIterator(); iterator.hasNext(); ) { //model is my current stock
 
             item = iterator.next();
-            if (getItem == item.stockName) {
+            if (getItem == item.getStockName()) {
 
                 itemPrice = item.getStockPrice();
                 quant = Integer.valueOf(quantityTxt.getText());
@@ -137,25 +163,40 @@ public class Kiosk extends JFrame {
                     total = total + Float.parseFloat(totalTxt.getText());
                     totalTxt.setText(String.valueOf(total));
                 } else {
-                    totalTxt.setText("£" + String.valueOf(total));
+                    totalTxt.setText(String.valueOf(total));
                 }
-                addModel.addElement("£" + itemPrice);
+                addModel.addElement(getItem +"|" + quantityTxt.getText()+ "|" + itemPrice);
             } else {
-                System.out.println("No");
-            }
-        }
 
+            }
+
+        }
         quantityTxt.setText("");
 
+        try {
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter("Resources\\BasketData.txt"));
+
+            for (int i=0; i<addedStockLst.getModel().getSize(); i++){
+                bw.write(addedStockLst.getModel().getElementAt(i));
+                bw.newLine();
+            }
+            bw.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Kiosk.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
     }
 
-    public void Cash() {
 
-
-
-
-    }
 }
+
+
+
+
+
+
 
 
 

@@ -1,13 +1,15 @@
 package com.Controller;
 
+import com.Model.AbstractView;
+
 import java.util.List;
 
-public class Receipt {
+public class Receipt extends AbstractView {
     public String typePayment;
 
     public CardPayment cardPayment;
 
-    public CashPayment cashPayment;
+    public Cash cashPayment;
 
     public void purchasedItems(final List<String> ItemName) {
     }
