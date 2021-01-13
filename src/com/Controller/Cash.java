@@ -75,13 +75,14 @@ public class Cash extends AbstractView {
         for (String lines : line) {
 
             values = lines.split("\\|");
-            int itemBarcode = Integer.parseInt(values[0]);
-            String itemName = values[1];
+            int itemBarcode = Integer.parseInt(values[1]);
+            String itemName = values[0];
             int itemQuant = Integer.parseInt(values[2]);
             float itemPrice = Float.parseFloat(values[3]);
-            payModel.addElement(values[0] + ", " + values[1] + ", £" + values[3] + ", " + values[2]);
+            payModel.addElement(values[0] + "," + values[1] + "," + values[2]+ ",£" + values[3]);
             itemsSelectedLst.setModel(payModel);
             //stockData.add(new Stock(itemName, itemBarcode, itemQuant, itemPrice));
+            quant = itemQuant;
 
         }
 
@@ -113,10 +114,23 @@ public class Cash extends AbstractView {
             finalTotalTxt.setText("0.00");
             leftToPayTxt.setText(String.valueOf(amountGiven - total));
             payBtn.setEnabled(false);
+            try {
+                List<String> line = Files.readAllLines(Path.of(String.valueOf(fileIn)));
+
+                for (String lines : line) {
+                    values = lines.split("\\|");
+                    reduceQuantity("Resources\\Stock");
+
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             printRecBtn.setEnabled(true);
 
 
         }
+
 
     }
 
@@ -126,57 +140,43 @@ public class Cash extends AbstractView {
                 + System.lineSeparator() + "Total Price: " + total + System.lineSeparator() + "Amount given:" + amountGiven + System.lineSeparator() +
                 "Change given: " + leftToPayTxt.getText(), "Receipt", JOptionPane.DEFAULT_OPTION);
 
-        try{
-            List<String> line = Files.readAllLines(Path.of(String.valueOf(fileIn)));
 
-            for (String lines: line) {
-                stockData = lines.split("\\|");
-
-
-
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
     }
 
     public void reduceQuantity(String filePath) throws IOException {
         printRecBtn.setEnabled(false);
+        int position = 0;
         String tempFile = "Resources\\Dump";
         File oldFile = new File(filePath);
         File newFile = new File(tempFile);
         String name = "";
 
+        try {
+            FileWriter fw = new FileWriter(tempFile, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter pw = new PrintWriter(bw);
+            FileReader fr = new FileReader(filePath);
+            BufferedReader br = new BufferedReader(fr);
 
-        FileWriter fw = new FileWriter(tempFile, true);
-        BufferedWriter bw = new BufferedWriter(fw);
-        PrintWriter pw = new PrintWriter(bw);
-        FileReader fr = new FileReader(filePath);
-        BufferedReader br = new BufferedReader(fr);
-
-        //var sw = new BufferedWriter(new FileWriter(stockFile, true));
-
-
-
-        String currentLine;
-
-
+            String currentLine;
 
             while ((currentLine = br.readLine()) != null) {
 
                 String[] data = currentLine.split("\\|");
-                int itemQuant = Integer.parseInt(values[2]);
-                itemQuant = itemQuant - quant;
+                int itemQuanty = Integer.parseInt(data[2]);
+                itemQuanty = itemQuanty - Integer.parseInt(values[2]);
+
+
 
 
                 if (!(data[position].equals(values[0]))) {
                     pw.println(currentLine);
 
                 } else {
-                    pw.println(values[0] + "|" + values[1] + "|" + itemQuant + "|" + values[3]);
+
+                    pw.println(data[0] + "|" + data[1] + "|" + itemQuanty + "|" + data[3]);
                 }
             }
 
@@ -190,14 +190,18 @@ public class Cash extends AbstractView {
             oldFile.delete();
             File dump = new File(filePath);
             newFile.renameTo(dump);
+        }
+        catch (Exception ignore){
 
         }
-
-        }
-
-
 
     }
+
+}
+
+
+
+
 
 
 

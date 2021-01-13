@@ -55,7 +55,7 @@ public class Kiosk extends AbstractView {
             public void actionPerformed(ActionEvent e) {
                 try {
                     Kiosk.this.dispose();
-                    AdminLogin adminLogon = new AdminLogin();
+                    AdminLogon adminLogon = new AdminLogon();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -106,14 +106,7 @@ public class Kiosk extends AbstractView {
 
     public void loadAllStock() throws IOException {
 
-
-        //Scanner fileRead = new Scanner(fileIn);
         List<String> line = Files.readAllLines(Path.of(String.valueOf(fileIn)));
-
-
-        //int i = 0;
-
-        //String linesFile = line.toString();
 
 
         for (String lines : line) {
@@ -173,7 +166,7 @@ public class Kiosk extends AbstractView {
                 } else {
                     totalTxt.setText(String.valueOf(total));
                 }
-                addModel.addElement(itemBarcode+"|"+ getItem +"|" + quant+ "|" + itemPrice);
+                addModel.addElement(getItem +"|"+ itemBarcode+ "|" + quant+ "|" + itemPrice);
             } else {
 
             }
