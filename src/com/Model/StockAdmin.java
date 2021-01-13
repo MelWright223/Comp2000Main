@@ -25,6 +25,7 @@ public class StockAdmin extends AbstractView {
     private JLabel StockPriceLbl;
     private JList StockList;
     private JButton ClearStock;
+    private JList ReorderLSt;
 
     private String[] values = new String[0];
     private ArrayList<Stock> stockData = new ArrayList<Stock>();
@@ -95,21 +96,17 @@ public class StockAdmin extends AbstractView {
     }
 
     public void loadData() throws IOException {
-
-
         //Scanner fileRead = new Scanner(fileIn);
         List<String> line = Files.readAllLines(Path.of(String.valueOf(fileIn)));
-
-
 
         //int i = 0;
 
         //String linesFile = line.toString();
         DefaultListModel<String> model = new DefaultListModel();
+        DefaultListModel<String> reorder = new DefaultListModel<>();
 
 
-        for (String lines:line)
-        {
+        for (String lines:line) {
 
             values = lines.split("\\|");
             //Stock item = new Stock();
@@ -125,12 +122,11 @@ public class StockAdmin extends AbstractView {
             //item.setStockQuantity(itemQuant);
 
             float itemPrice = Float.parseFloat(values[3]);
-           // item.setStockPrice(itemPrice);
+            // item.setStockPrice(itemPrice);
             stockData.add(new Stock(itemName, itemCode, itemQuant, itemPrice));
 
             model.addElement(values[0]);
             StockList.setModel(model);
-
 
 
             StockList.addListSelectionListener(e -> {
@@ -142,16 +138,22 @@ public class StockAdmin extends AbstractView {
                 if (selected.equals(itemName)) {
 
                     StockIdTxt.setText(String.valueOf(itemCode));
-                    StockPriceTxt.setText("£" +String.valueOf(itemPrice));
+                    StockPriceTxt.setText(String.valueOf(itemPrice));
                     StockQuantTxt.setText(String.valueOf(itemQuant));
 
                 }
 
             });
+            if (itemQuant < 5) {
+                reorder.addElement(itemName);
+                ReorderLSt.setModel(reorder);
+
+            }
+
+
 
 
         }
-
 
 
 
@@ -232,7 +234,6 @@ public class StockAdmin extends AbstractView {
         catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
     public void editStock(String filePath, String editTerm, int positionOfTerm, String newName, int newCode, int newQuan, float newPrice) {

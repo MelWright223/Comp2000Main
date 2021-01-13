@@ -38,6 +38,7 @@ public class Kiosk extends AbstractView {
     private File fileIn = new File("Resources\\Stock");
     public static float total;
     public ArrayList<String> things;
+    public static int quant;
    // private List<ArrayList> hope;
 
 
@@ -54,7 +55,7 @@ public class Kiosk extends AbstractView {
             public void actionPerformed(ActionEvent e) {
                 try {
                     Kiosk.this.dispose();
-                    AdminLogon adminLogon = new AdminLogon();
+                    AdminLogin adminLogon = new AdminLogin();
                 } catch (IOException ioException) {
                     ioException.printStackTrace();
                 }
@@ -93,7 +94,11 @@ public class Kiosk extends AbstractView {
         cardBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardPayment card = new CardPayment();
+                try {
+                    CardPayment card = new CardPayment();
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
             }
         });
     }
@@ -146,6 +151,7 @@ public class Kiosk extends AbstractView {
         float itemPrice;
 
         int quant;
+        int itemBarcode;
 
 
         for (model.elements().asIterator(); iterator.hasNext(); ) { //model is my current stock
@@ -155,6 +161,8 @@ public class Kiosk extends AbstractView {
 
                 itemPrice = item.getStockPrice();
                 quant = Integer.valueOf(quantityTxt.getText());
+                itemBarcode = item.getStockCode();
+
 
                 total = quant * itemPrice;
 
@@ -165,7 +173,7 @@ public class Kiosk extends AbstractView {
                 } else {
                     totalTxt.setText(String.valueOf(total));
                 }
-                addModel.addElement(getItem +"|" + quantityTxt.getText()+ "|" + itemPrice);
+                addModel.addElement(itemBarcode+"|"+ getItem +"|" + quant+ "|" + itemPrice);
             } else {
 
             }

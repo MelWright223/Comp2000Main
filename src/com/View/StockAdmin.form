@@ -5,7 +5,9 @@
     <constraints>
       <xy x="20" y="9" width="522" height="411"/>
     </constraints>
-    <properties/>
+    <properties>
+      <background color="-16732229"/>
+    </properties>
     <border type="none"/>
     <children>
       <component id="5afcf" class="javax.swing.JButton" binding="DeleteStockBtn">
@@ -102,7 +104,7 @@
       </component>
       <component id="33128" class="javax.swing.JList" binding="StockList">
         <constraints>
-          <grid row="0" column="0" row-span="8" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+          <grid row="0" column="0" row-span="5" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="150" height="50"/>
           </grid>
         </constraints>
@@ -126,6 +128,17 @@
         </constraints>
         <properties>
           <text value="Add"/>
+        </properties>
+      </component>
+      <component id="f951" class="javax.swing.JList" binding="ReorderLSt">
+        <constraints>
+          <grid row="5" column="0" row-span="3" col-span="1" vsize-policy="6" hsize-policy="2" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="150" height="50"/>
+          </grid>
+        </constraints>
+        <properties>
+          <foreground color="-4521472"/>
+          <selectionForeground color="-16777216"/>
         </properties>
       </component>
     </children>
